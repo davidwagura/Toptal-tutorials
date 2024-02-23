@@ -9,34 +9,55 @@ class ArticleController extends Controller
 {
     public function index()
     {
-        return Article::all();
+        $articles = Article::all();
+        return response()->json($articles);
+    }
+    public function create()
+    {
+        return response()->json;
     }
 
-    public function show(Article $article)
+    public function edit($id)
     {
-        return $article;
+        $article = Article::findorFail($id);
+        return response()->json($article);
     }
+    public function show($id)
+    {
+        $article = Article::findorFail($id);
+        return response()->json($article);
+    }
+
 
     public function store(Request $request)
     {
-        $article = Article::create($request->all());
+        $article = new Article;
+        $article->title = $request->title;
+        $article->body = $request->body;
+        $article->save();
 
-        return response()->json($article, 201);
+        return response()->json($article);
 
     }
 
-    public function update(Request $request, Article $article)
+    public function update(Request $request, $id)
     {
-        $article->update($request->all());
+        $article = Article::findorFail($id);
 
-        return response()->json($article, 200);
+        $article = new Article;
+        $article->title = $request->title;
+        $article->body = $request->body;
+        $article->save();
+
+        return response()->json($article);
     }
 
-    public function delete(Article $article)
+    public function delete($id)
     {
+        $article = Article::findorFail($id);
         $article->delete();
 
-        return response()->json(null,204);
+        return response()->json($article);
 
     }
 }
